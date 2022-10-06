@@ -18,10 +18,6 @@ export default class ProductsController {
 
   public getAllProducts = async (req: Request, res: Response) => {
     const products: IProducts[] = await this.service.getProducts();
-    // console.log(products);
-    // if (products.length === 0) {
-    //   return res.status(404).json('Restaurants not found');
-    // }
 
     return res.status(200).json(products);
   };
