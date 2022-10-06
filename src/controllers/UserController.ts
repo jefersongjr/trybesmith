@@ -1,19 +1,19 @@
 import { Response, Request } from 'express';
 import { IUser } from '../interfaces';
-import UserModel from '../models/UserModel';
+import UserService from '../services/UserService';
 
 export default class UserController {
-  private service: UserModel;
+  private service: UserService;
 
   constructor() {
-    this.service = new UserModel();
+    this.service = new UserService();
   }
 
   public createNewUser = async (req: Request, res: Response) => {
-    const user = req.body as IUser;
+    const { username, classe, level, password } = req.body as IUser;
 
-    const created = await this.service.newUser(user);
+    const created = await this.service.createUser(username, classe, level, password);
 
-    return res.status(201).json(created);
+    return res.status(201).json({ token: created });
   };
 }
