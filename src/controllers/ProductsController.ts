@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import ProductsService from '../services/ProductsService';
 import { IProducts } from '../interfaces';
 
@@ -9,11 +9,15 @@ export default class ProductsController {
     this.service = new ProductsService();
   }
 
-  public createNewProduct = async (req: Request, res: Response) => {
-    const products = req.body as IProducts;
+  public createNewProduct = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const products = req.body as IProducts;
 
-    const created: IProducts = await this.service.createProducts(products);
-    return res.status(201).json(created);
+      const created: IProducts = await this.service.createProducts(products);
+      return res.status(201).json(created);
+    } catch (error) {
+      next(error);
+    }
   };
 
   public getAllProducts = async (req: Request, res: Response) => {
