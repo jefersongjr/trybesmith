@@ -1,6 +1,6 @@
 import { IProducts } from '../interfaces';
 import ProductsModel from '../models/ProductsModel';
-import ThrowException from '../middlewares/exceptions/ThrowException';
+import productsValidate from '../middlewares/ProductsMidleware';
 
 export default class ProductsService {
   private model: ProductsModel;
@@ -10,7 +10,9 @@ export default class ProductsService {
   }
 
   public createProducts = async (products: IProducts):Promise<IProducts> => {
-    if (!products.name) throw new ThrowException(400, '"name" is required');
+    productsValidate(products.name, 'name');
+    productsValidate(products.amount, 'amount');
+    console.log(typeof (products.name));
     const created = await this.model.newProduct(products);
     return created;
   };
